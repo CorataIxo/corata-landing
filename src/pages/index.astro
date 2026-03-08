@@ -1,0 +1,732 @@
+---
+import PhysicsCanvas from '../components/PhysicsCanvas.astro';
+import SkillBadge   from '../components/SkillBadge.astro';
+import OverviewCard from '../components/OverviewCard.astro';
+import '../styles/global.css';
+---
+
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Corata — Tu Talento Verificado</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green:       #008471;
+      --green-deep:  #005C4E;
+      --green-dim:   rgba(0,132,113,0.10);
+      --green-glow:  rgba(0,132,113,0.25);
+      --yellow:      #FFD000;
+      --yellow-hl:   rgba(255,208,0,0.35);
+      --dark:   #0F0F0E;
+      --mid:    #555550;
+      --muted:  #9A9A92;
+      --bg:     #FFFFFF;
+      --surface:#F8F8F6;
+      --rule:   #EBEBEA;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── FIXED HALO ── */
+    .halo {
+      position: fixed;
+      bottom: -200px;
+      right: -150px;
+      width: 700px;
+      height: 700px;
+      background: conic-gradient(
+        from 200deg at 50% 50%,
+        #FFD000 0deg,
+        #00C896 80deg,
+        #008471 140deg,
+        #004D8C 200deg,
+        #6B00C2 260deg,
+        #FFD000 360deg
+      );
+      filter: blur(90px);
+      opacity: 0.13;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      animation: haloPulse 10s ease-in-out infinite;
+    }
+
+    @keyframes haloPulse {
+      0%,100% { opacity: 0.13; transform: scale(1); }
+      50%      { opacity: 0.17; transform: scale(1.06); }
+    }
+
+    /* ── CANVAS ── */
+    #physics-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255,255,255,0.90);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule);
+      height: 60px;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+
+    .nav-r { display: flex; align-items: center; gap: 8px; }
+
+    .nav-btn-ghost {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--mid);
+      background: transparent;
+      border: 1.5px solid var(--rule);
+      padding: 7px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .nav-btn-ghost:hover { border-color: #ccc; color: var(--dark); }
+
+    .nav-btn-solid {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+      background: var(--yellow);
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .nav-btn-solid:hover { filter: brightness(0.93); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 72px 48px 96px;
+      display: grid;
+      grid-template-columns: 1fr 390px;
+      gap: 64px;
+      align-items: center;
+      min-height: calc(100vh - 60px);
+    }
+
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding: 52px 28px 72px; gap: 52px; }
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 20px;
+      height: 1.5px;
+      background: var(--yellow);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(52px, 7vw, 88px);
+      line-height: 0.96;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 28px;
+    }
+
+    h1 .dim { color: #D4D4D0; }
+
+    /* Yellow rotulador highlight on key word */
+    h1 .hl {
+      position: relative;
+      display: inline;
+      white-space: nowrap;
+    }
+    h1 .hl::after {
+      content: '';
+      position: absolute;
+      left: -2px;
+      right: -2px;
+      bottom: 6px;
+      height: 10px;
+      background: var(--yellow);
+      opacity: 0.4;
+      border-radius: 2px;
+      z-index: -1;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: hlGrow 0.6s 0.7s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    @keyframes hlGrow { to { transform: scaleX(1); } }
+
+    .hero-sub {
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.72;
+      color: var(--mid);
+      max-width: 440px;
+      margin-bottom: 40px;
+    }
+    .hero-sub b { font-weight: 600; color: var(--dark); }
+
+    .ctas { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+    .btn-primary {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #008471 0%, #006B5C 100%);
+      border: none;
+      padding: 14px 30px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.22s;
+      letter-spacing: 0.01em;
+      box-shadow: 0 4px 20px var(--green-glow);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #007060 0%, #004D3F 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(0,132,113,0.35);
+    }
+
+    .btn-secondary {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--mid);
+      background: transparent;
+      border: 1.5px solid var(--rule);
+      padding: 14px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-secondary:hover { border-color: #ccc; color: var(--dark); }
+
+    /* proof */
+    .proof {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 48px;
+      padding-top: 26px;
+      border-top: 1px solid var(--rule);
+    }
+    .avs { display: flex; }
+    .av {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 2.5px solid var(--bg);
+      background: var(--rule);
+      color: var(--mid);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -9px;
+    }
+    .av:first-child { margin-left: 0; }
+    .av.y { background: var(--green-dim); color: #005C4E; }
+    .proof-copy { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+    .proof-copy b { font-weight: 600; color: var(--mid); }
+
+    /* ── CARD ── */
+    .card-zone {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    .card-zone::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 65%;
+      height: 40px;
+      background: radial-gradient(ellipse, var(--green-glow) 0%, transparent 70%);
+      filter: blur(10px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .profile-card {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 360px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      box-shadow:
+        0 2px 4px rgba(0,0,0,0.03),
+        0 10px 28px rgba(0,0,0,0.07),
+        0 36px 72px rgba(0,0,0,0.06);
+      animation: floatCard 7s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    .card-head {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .v-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--green-dim);
+      border: 1px solid rgba(255,208,0,0.35);
+      border-radius: 100px;
+      padding: 3px 10px 3px 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #005C4E;
+    }
+    .v-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--yellow);
+      flex-shrink: 0;
+      animation: blink 2s ease infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--rule);
+    }
+    .score-cell {
+      padding: 18px 22px;
+    }
+    .score-cell:first-child { border-right: 1px solid var(--rule); }
+    .sc-val {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--dark);
+      margin-bottom: 3px;
+    }
+    .sc-val.accent { color: #005C4E; }
+    .sc-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* skill rows handled by SkillBadge component */
+
+    .card-foot {
+      padding: 12px 22px;
+      background: var(--surface);
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .foot-icon { font-size: 11px; opacity: 0.30; flex-shrink: 0; margin-top: 1px; }
+    .foot-text { font-size: 11px; color: var(--muted); line-height: 1.55; }
+    .foot-text b { font-weight: 600; color: var(--mid); }
+
+    /* ── SECTION RULE ── */
+    .s-rule { border: none; border-top: 1px solid var(--rule); max-width: 1200px; margin: 0 auto; }
+
+    /* ── PROCESS ── */
+    .process {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 48px 96px;
+    }
+    @media (max-width: 960px) { .process { padding: 56px 28px 72px; } }
+
+    .section-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .s-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .s-title {
+      font-size: clamp(26px, 3.2vw, 38px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: var(--dark);
+      text-align: right;
+      max-width: 460px;
+      line-height: 1.12;
+      text-transform: uppercase;
+    }
+    @media (max-width: 700px) { .s-title { text-align: left; } }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    @media (max-width: 700px) { .steps { grid-template-columns: 1fr; } }
+
+    .step {
+      background: var(--bg);
+      padding: 38px 32px;
+      cursor: default;
+      transition: background 0.16s;
+    }
+    .step:hover { background: var(--surface); }
+
+    .step-n {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--rule);
+      line-height: 1;
+      margin-bottom: 24px;
+      transition: color 0.18s;
+    }
+    .step:hover .step-n { color: var(--green); }
+
+    .step-t {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      color: var(--dark);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .step-b { font-size: 14px; color: var(--mid); line-height: 1.7; }
+    .step-b b { font-weight: 600; color: var(--dark); }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      position: relative;
+      z-index: 10;
+      background: var(--dark);
+      overflow: hidden;
+    }
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -80px;
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(255,208,0,0.10) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 88px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: end;
+    }
+    @media (max-width: 700px) { .cta-inner { grid-template-columns: 1fr; gap: 48px; padding: 56px 28px; } }
+
+    .cta-h {
+      font-size: clamp(40px, 5.5vw, 68px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 0.96;
+      text-transform: uppercase;
+      color: #F5F5F3;
+      margin-bottom: 18px;
+    }
+    .cta-h em { font-style: normal; color: var(--green); }
+    .cta-p { font-size: 16px; color: rgba(245,245,243,0.38); line-height: 1.7; }
+
+    .cta-right { display: flex; flex-direction: column; }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .t-label { font-size: 13px; color: rgba(245,245,243,0.40); }
+    .t-check {
+      width: 19px; height: 19px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .t-check svg { width: 10px; height: 10px; }
+
+    .btn-cta {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #008471 0%, #006B5C 100%);
+      border: none;
+      padding: 17px 28px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.18s;
+      box-shadow: 0 4px 24px rgba(255,208,0,0.25);
+      letter-spacing: 0.01em;
+    }
+    .btn-cta:hover { filter: brightness(0.96); transform: translateY(-1px); }
+    .btn-cta .arr { font-size: 18px; transition: transform 0.18s; }
+    .btn-cta:hover .arr { transform: translate(2px,-2px); }
+
+    /* ── FADE UP ── */
+    @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+    .fu      { opacity:0; transform:translateY(18px); animation: fadeUp .65s ease forwards; }
+    .d1 { animation-delay:.05s }
+    .d2 { animation-delay:.16s }
+    .d3 { animation-delay:.27s }
+    .d4 { animation-delay:.38s }
+    .d5 { animation-delay:.49s }
+    .card-in { opacity:0; transform:translateY(22px); animation: fadeUp .8s .22s ease forwards; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Fixed aurora halo — stays in corner while scrolling -->
+  <div class="halo"></div>
+
+  <PhysicsCanvas />
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Corata</div>
+    <div class="nav-r">
+      <button class="nav-btn-ghost">Para empresas</button>
+      <button class="nav-btn-solid">Acceder</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <main class="hero">
+
+    <!-- Left -->
+    <div>
+      <div class="eyebrow fu d1">Executive Intelligence para todos</div>
+
+      <h1 class="fu d2">
+        Tu talento<br/>
+        <span class="hl">no miente.</span><br/>
+        <span class="dim">Tus datos,<br/>tampoco.</span>
+      </h1>
+
+      <p class="hero-sub fu d3">
+        Genera un perfil dinámico basado en retos reales de UX y Soft Skills.
+        <b>Datos verificados que tú decides cuándo compartir.</b>
+      </p>
+
+      <div class="ctas fu d4">
+        <button class="btn-primary">Empezar reto</button>
+        <button class="btn-secondary">Saber más</button>
+      </div>
+
+      <div class="proof fu d5">
+        <div class="avs">
+          <div class="av y">MR</div>
+          <div class="av">AL</div>
+          <div class="av">PG</div>
+          <div class="av">+</div>
+        </div>
+        <p class="proof-copy">
+          <b>+340 candidatxs</b> ya tienen su perfil verificado.<br/>
+          Primeras empresas incorporadas en beta.
+        </p>
+      </div>
+    </div>
+
+    <!-- Right — card -->
+    <div class="card-zone">
+      <div class="profile-card card-in">
+
+        <div class="card-head">
+          <span class="card-label">Preview de perfil</span>
+          <div class="v-pill">
+            <span class="v-dot"></span>
+            Verificado
+          </div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-cell">
+            <div class="sc-val accent">94%</div>
+            <div class="sc-label">Match score</div>
+          </div>
+          <div class="score-cell">
+            <div class="sc-val">Senior</div>
+            <div class="sc-label">Nivel</div>
+          </div>
+        </div>
+
+        <SkillBadge name="UX Research" level="Verificado"  percentage={92} />
+        <SkillBadge name="Leadership"  level="Soft Skill"  percentage={88} />
+        <SkillBadge name="Strategy"    level="Business"    percentage={74} />
+
+        <div class="card-foot">
+          <span class="foot-icon">⊘</span>
+          <p class="foot-text">
+            <b>Solo tú decides</b> quién ve estos datos. Privado hasta que lo actives.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <hr class="s-rule" />
+
+  <!-- PROCESS -->
+  <section class="process">
+    <div class="section-top">
+      <span class="s-eyebrow">Cómo funciona</span>
+      <h2 class="s-title">Un perfil que nadie puede falsear.</h2>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">01</div>
+        <div class="step-t">Completa retos reales</div>
+        <p class="step-b">Situaciones de UX y toma de decisiones. <b>Sin formularios.</b> El sistema observa y mide.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <div class="step-t">El perfil se genera solo</div>
+        <p class="step-b">Los porcentajes los calcula el algoritmo. <b>Por eso son creíbles.</b> Por eso las empresas confían.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <div class="step-t">Tú controlas la visibilidad</div>
+        <p class="step-b">Activa cuando quieras, para quien elijas. <b>Sin sorpresas.</b> Tus datos, bajo tu control.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <div class="cta-inner">
+      <div>
+        <h2 class="cta-h">Tu talento<br/>habla<br/><em>por ti.</em></h2>
+        <p class="cta-p">Únete a la beta. Los primeros perfiles verificados tienen ventaja cuando lleguen las empresas.</p>
+      </div>
+      <div class="cta-right">
+        <div class="trust-item">
+          <span class="t-label">Sin CV</span>
+          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0F0F0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
+        </div>
+        <div class="trust-item">
+          <span class="t-label">Tú controlas tus datos</span>
+          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0F0F0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
+        </div>
+        <div class="trust-item">
+          <span class="t-label">Siempre gratis para candidatxs</span>
+          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0F0F0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
+        </div>
+        <div class="trust-item">
+          <span class="t-label">Perfil verificado, no declarado</span>
+          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0F0F0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
+        </div>
+        <button class="btn-cta">
+          Crear mi perfil gratis
+          <span class="arr">↗</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

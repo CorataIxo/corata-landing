@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* La nueva paleta en tus variables de siempre */
+  --green: #008471;
+  --green-dim: rgba(0, 132, 113, 0.10);
+  --green-glow: rgba(0, 132, 113, 0.25);
+  --dark: #081C15; /* El verde profundo para el texto */
+  --mid: #555550;
+  --muted: #9A9A92;
+  --bg: #FBFBFB;   /* El blanco roto */
+  --surface: #F8F8F6;
+  --rule: #EBEBEA;
+  --yellow-tropical: rgba(255, 208, 0, 0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--dark);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* EL HALO TROPICAL */
+  background-image: radial-gradient(
+    circle at top right, 
+    var(--yellow-tropical) 0%, 
+    rgba(0, 132, 113, 0.04) 40%, 
+    transparent 75%
+  );
+  background-attachment: fixed;
+}
+
+/* --- TODO TU CÓDIGO ORIGINAL SIN TOCAR ESTRUCTURA --- */
+
+#physics-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(251, 251, 251, 0.90);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule);
+  height: 60px;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dark);
+}
+
+.nav-r { display: flex; align-items: center; gap: 8px; }
+
+.nav-btn-ghost {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mid);
+  background: transparent;
+  border: 1.5px solid var(--rule);
+  padding: 7px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.nav-btn-solid {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: var(--green);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.hero {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 72px 48px 96px;
+  display: grid;
+  grid-template-columns: 1fr 390px;
+  gap: 64px;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+}
+
+h1 {
+  font-weight: 900;
+  font-size: clamp(52px, 7vw, 88px);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--dark);
+  margin-bottom: 28px;
+}
+
+h1 .dim { color: #D4D4D0; }
+
+.btn-primary {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  background: var(--green);
+  border: none;
+  padding: 14px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.18s;
+  box-shadow: 0 4px 20px var(--green-glow);
+}
+
+/* Animaciones y resto de estilos (Profile card, Steps, CTA Band) */
+.profile-card {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 360px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.05);
+  animation: floatCard 7s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+/* ... Copia aquí el resto de tus estilos del archivo original: .step, .cta-band, .fu, etc. ... */

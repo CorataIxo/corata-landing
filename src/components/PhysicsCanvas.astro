@@ -1,0 +1,50 @@
+---
+---
+<canvas id="physics-canvas"></canvas>
+<script>
+  const canvas = document.getElementById('physics-canvas');
+  const ctx = canvas.getContext('2d');
+  const NODE_COUNT = 20, CONNECTION_DIST = 170, MOUSE_REPEL = 100, MAX_SPEED = 0.40;
+  const R = 0, G = 132, B = 113;
+  let W, H;
+  const mouse = { x: -9999, y: -9999 };
+  let nodes = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function init() {
+    nodes = Array.from({ length: NODE_COUNT }, () => ({
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.20, vy: (Math.random()-0.5)*0.20,
+      r: Math.random()*1.8+1.0, mass: Math.random()*0.5+0.75
+    }));
+  }
+  function tick() {
+    ctx.clearRect(0,0,W,H);
+    for (const n of nodes) {
+      const dx=n.x-mouse.x, dy=n.y-mouse.y, dist=Math.hypot(dx,dy);
+      if (dist<MOUSE_REPEL&&dist>0) { const f=((MOUSE_REPEL-dist)/MOUSE_REPEL)*0.009; n.vx+=(dx/dist)*f/n.mass; n.vy+=(dy/dist)*f/n.mass; }
+      n.vx*=0.9995; n.vy*=0.9995;
+      const speed=Math.hypot(n.vx,n.vy);
+      if (speed>MAX_SPEED) { n.vx=(n.vx/speed)*MAX_SPEED; n.vy=(n.vy/speed)*MAX_SPEED; }
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0){n.x=0;n.vx=Math.abs(n.vx)*0.6;} if(n.x>W){n.x=W;n.vx=-Math.abs(n.vx)*0.6;}
+      if(n.y<0){n.y=0;n.vy=Math.abs(n.vy)*0.6;} if(n.y>H){n.y=H;n.vy=-Math.abs(n.vy)*0.6;}
+    }
+    for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++) {
+      const a=nodes[i],b=nodes[j],dist=Math.hypot(a.x-b.x,a.y-b.y);
+      if (dist<CONNECTION_DIST) {
+        ctx.beginPath();
+        ctx.strokeStyle=`rgba(${R},${G},${B},${(1-dist/CONNECTION_DIST)*0.07})`;
+        ctx.lineWidth=0.7; ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+    for (const n of nodes) {
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${R},${G},${B},0.28)`; ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
+  window.addEventListener('mouseleave', ()=>{ mouse.x=-9999; mouse.y=-9999; });
+  resize(); init(); tick();
+</script>
