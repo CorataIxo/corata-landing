@@ -2,6 +2,7 @@
 import PhysicsCanvas from '../components/PhysicsCanvas.astro';
 import SkillBadge   from '../components/SkillBadge.astro';
 import OverviewCard from '../components/OverviewCard.astro';
+import ChallengePreview from '../components/ChallengePreview.astro';
 import '../styles/global.css';
 ---
 
@@ -14,17 +15,17 @@ import '../styles/global.css';
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --green:       #008471;
-      --green-deep:  #005C4E;
-      --green-dim:   rgba(0,132,113,0.10);
-      --green-glow:  rgba(0,132,113,0.25);
+      --plum:        #3E1F47;
+      --plum-deep:   #2A1231;
+      --plum-dim:    rgba(62,31,71,0.10);
+      --plum-glow:   rgba(62,31,71,0.22);
       --yellow:      #FFD000;
       --yellow-hl:   rgba(255,208,0,0.35);
-      --dark:   #0F0F0E;
+      --dark:   #0D0D0B;
       --mid:    #555550;
       --muted:  #9A9A92;
-      --bg:     #FFFFFF;
-      --surface:#F8F8F6;
+      --bg:     #F7F5F1;
+      --surface:#F2F0EC;
       --rule:   #EBEBEA;
     }
 
@@ -38,33 +39,29 @@ import '../styles/global.css';
       overflow-x: hidden;
     }
 
-    /* ── FIXED HALO ── */
+    /* ── FIXED HALO ── eggplant, bottom-right ── */
     .halo {
       position: fixed;
-      bottom: -200px;
-      right: -150px;
-      width: 700px;
-      height: 700px;
-      background: conic-gradient(
-        from 200deg at 50% 50%,
-        #FFD000 0deg,
-        #00C896 80deg,
-        #008471 140deg,
-        #004D8C 200deg,
-        #6B00C2 260deg,
-        #FFD000 360deg
+      bottom: -400px;
+      right: -350px;
+      width: 1100px;
+      height: 1100px;
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(107,45,94,0.22) 0%,
+        rgba(107,45,94,0.07) 50%,
+        transparent 70%
       );
-      filter: blur(90px);
-      opacity: 0.13;
+      filter: blur(110px);
       pointer-events: none;
       z-index: 0;
       border-radius: 50%;
-      animation: haloPulse 10s ease-in-out infinite;
+      animation: haloPulse 14s ease-in-out infinite;
     }
 
     @keyframes haloPulse {
-      0%,100% { opacity: 0.13; transform: scale(1); }
-      50%      { opacity: 0.17; transform: scale(1.06); }
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.05) translate(-24px, -28px); }
     }
 
     /* ── CANVAS ── */
@@ -139,7 +136,7 @@ import '../styles/global.css';
       margin: 0 auto;
       padding: 72px 48px 96px;
       display: grid;
-      grid-template-columns: 1fr 390px;
+      grid-template-columns: 1fr 400px;
       gap: 64px;
       align-items: center;
       min-height: calc(100vh - 60px);
@@ -218,32 +215,33 @@ import '../styles/global.css';
 
     .btn-primary {
       font-family: 'Inter', sans-serif;
-      font-size: 14px;
       font-weight: 700;
       color: #fff;
-      background: linear-gradient(135deg, #008471 0%, #006B5C 100%);
+      background: #3E1F47;
       border: none;
-      padding: 14px 30px;
+      padding: 18px 40px;
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.22s;
-      letter-spacing: 0.01em;
-      box-shadow: 0 4px 20px var(--green-glow);
+      font-size: 13px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 20px rgba(62,31,71,0.25);
     }
     .btn-primary:hover {
-      background: linear-gradient(135deg, #007060 0%, #004D3F 100%);
+      background: #2A1231;
       transform: translateY(-2px);
-      box-shadow: 0 10px 32px rgba(0,132,113,0.35);
+      box-shadow: 0 10px 32px rgba(62,31,71,0.35);
     }
 
     .btn-secondary {
       font-family: 'Inter', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--mid);
       background: transparent;
       border: 1.5px solid var(--rule);
-      padding: 14px 24px;
+      padding: 18px 26px;
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.15s;
@@ -274,7 +272,7 @@ import '../styles/global.css';
       margin-left: -9px;
     }
     .av:first-child { margin-left: 0; }
-    .av.y { background: var(--green-dim); color: #005C4E; }
+    .av.y { background: var(--plum-dim); color: #2A1231; }
     .proof-copy { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
     .proof-copy b { font-weight: 600; color: var(--mid); }
 
@@ -292,7 +290,7 @@ import '../styles/global.css';
       transform: translateX(-50%);
       width: 65%;
       height: 40px;
-      background: radial-gradient(ellipse, var(--green-glow) 0%, transparent 70%);
+      background: radial-gradient(ellipse, var(--plum-glow) 0%, transparent 70%);
       filter: blur(10px);
       z-index: 0;
       pointer-events: none;
@@ -300,7 +298,7 @@ import '../styles/global.css';
 
     .profile-card {
       background: var(--bg);
-      border: 1px solid var(--rule);
+      border: 1px solid rgba(0,0,0,0.08);
       border-radius: 20px;
       width: 100%;
       max-width: 360px;
@@ -308,10 +306,22 @@ import '../styles/global.css';
       position: relative;
       z-index: 1;
       box-shadow:
-        0 2px 4px rgba(0,0,0,0.03),
-        0 10px 28px rgba(0,0,0,0.07),
-        0 36px 72px rgba(0,0,0,0.06);
+        0 1px 2px rgba(0,0,0,0.04),
+        0 4px 12px rgba(0,0,0,0.06),
+        0 16px 40px rgba(0,0,0,0.08),
+        0 40px 80px rgba(0,0,0,0.07);
       animation: floatCard 7s ease-in-out infinite;
+    }
+
+    /* Top accent — thin, single green line. Arquitectónico, no decorativo. */
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: #3E1F47;
+      z-index: 2;
+      border-radius: 20px 20px 0 0;
     }
 
     @keyframes floatCard {
@@ -337,7 +347,7 @@ import '../styles/global.css';
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      background: var(--green-dim);
+      background: var(--plum-dim);
       border: 1px solid rgba(255,208,0,0.35);
       border-radius: 100px;
       padding: 3px 10px 3px 8px;
@@ -346,7 +356,7 @@ import '../styles/global.css';
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #005C4E;
+      color: #2A1231;
     }
     .v-dot {
       width: 5px; height: 5px;
@@ -374,7 +384,7 @@ import '../styles/global.css';
       color: var(--dark);
       margin-bottom: 3px;
     }
-    .sc-val.accent { color: #005C4E; }
+    .sc-val.accent { color: #3E1F47; }
     .sc-label {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 9px;
@@ -383,17 +393,97 @@ import '../styles/global.css';
       color: var(--muted);
     }
 
-    /* skill rows handled by SkillBadge component */
+    /* Skill row hover glow */
+    .skill-row {
+      transition: background 0.15s;
+      cursor: default;
+    }
+    .skill-row:hover {
+      background: linear-gradient(90deg, rgba(62,31,71,0.04) 0%, transparent 100%);
+    }
+
+    /* ── SCENARIO PREVIEW ── */
+    .scenario-box {
+      margin-top: 32px;
+      border: 1px solid var(--rule);
+      border-left: 2px solid var(--yellow);
+      border-radius: 10px;
+      padding: 16px 20px;
+      background: rgba(255,208,0,0.03);
+      max-width: 440px;
+    }
+    .scenario-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .scenario-tag::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--yellow);
+      flex-shrink: 0;
+    }
+    .scenario-text {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--mid);
+      font-style: italic;
+    }
+    .scenario-text em {
+      font-style: normal;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    /* ── PIPELINE ── */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      flex-wrap: wrap;
+      gap: 2px;
+    }
+    .pipe-step {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .pipe-step.active {
+      color: var(--plum);
+      font-weight: 600;
+    }
+    .pipe-arrow {
+      font-size: 11px;
+      color: var(--rule);
+      margin: 0 8px;
+      flex-shrink: 0;
+    }
 
     .card-foot {
       padding: 12px 22px;
-      background: var(--surface);
-      border-top: 1px solid var(--rule);
+      background: linear-gradient(90deg, rgba(62,31,71,0.05) 0%, var(--surface) 100%);
+      border-top: 1px solid rgba(62,31,71,0.12);
       display: flex;
       align-items: flex-start;
       gap: 8px;
     }
-    .foot-icon { font-size: 11px; opacity: 0.30; flex-shrink: 0; margin-top: 1px; }
+    .foot-icon { font-size: 11px; color: #3E1F47; opacity: 0.5; flex-shrink: 0; margin-top: 1px; }
     .foot-text { font-size: 11px; color: var(--muted); line-height: 1.55; }
     .foot-text b { font-weight: 600; color: var(--mid); }
 
@@ -466,7 +556,7 @@ import '../styles/global.css';
       margin-bottom: 24px;
       transition: color 0.18s;
     }
-    .step:hover .step-n { color: var(--green); }
+    .step:hover .step-n { color: var(--plum); }
 
     .step-t {
       font-size: 14px;
@@ -518,7 +608,7 @@ import '../styles/global.css';
       color: #F5F5F3;
       margin-bottom: 18px;
     }
-    .cta-h em { font-style: normal; color: var(--green); }
+    .cta-h em { font-style: normal; color: var(--plum); }
     .cta-p { font-size: 16px; color: rgba(245,245,243,0.38); line-height: 1.7; }
 
     .cta-right { display: flex; flex-direction: column; }
@@ -534,7 +624,7 @@ import '../styles/global.css';
     .t-check {
       width: 19px; height: 19px;
       border-radius: 50%;
-      background: var(--green);
+      background: #3E1F47;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -547,7 +637,7 @@ import '../styles/global.css';
       font-size: 15px;
       font-weight: 700;
       color: #fff;
-      background: linear-gradient(135deg, #008471 0%, #006B5C 100%);
+      background: #3E1F47;
       border: none;
       padding: 17px 28px;
       border-radius: 10px;
@@ -597,44 +687,68 @@ import '../styles/global.css';
 
     <!-- Left -->
     <div>
-      <div class="eyebrow fu d1">Executive Intelligence para todos</div>
+      <div class="eyebrow fu d1">Sistema de evaluación conductual</div>
 
       <h1 class="fu d2">
-        Tu talento<br/>
-        <span class="hl">no miente.</span><br/>
-        <span class="dim">Tus datos,<br/>tampoco.</span>
+        Demuestra<br/>
+        <span class="hl">cómo piensas</span><br/>
+        <span class="dim">No lo que<br/>declaras</span>
       </h1>
 
       <p class="hero-sub fu d3">
-        Genera un perfil dinámico basado en retos reales de UX y Soft Skills.
-        <b>Datos verificados que tú decides cuándo compartir.</b>
+        Completa retos basados en situaciones reales de trabajo.
+        Corata analiza tus respuestas y genera un <b>perfil de ejecución verificado</b> — sin CV, sin sesgos.
       </p>
 
-      <div class="ctas fu d4">
-        <button class="btn-primary">Empezar reto</button>
-        <button class="btn-secondary">Saber más</button>
+      <!-- Scenario preview -->
+      <div class="scenario-box fu d3">
+        <div class="scenario-tag">Ejemplo de reto</div>
+        <p class="scenario-text">
+          Gestionas varias tareas. A mitad del tiempo, <em>las prioridades cambian por un evento externo.</em>
+          Reorganiza tu flujo. El sistema mide tu velocidad de adaptación y tu razonamiento estructural.
+        </p>
       </div>
 
-      <div class="proof fu d5">
-        <div class="avs">
-          <div class="av y">MR</div>
-          <div class="av">AL</div>
-          <div class="av">PG</div>
-          <div class="av">+</div>
-        </div>
-        <p class="proof-copy">
-          <b>+340 candidatxs</b> ya tienen su perfil verificado.<br/>
-          Primeras empresas incorporadas en beta.
-        </p>
+      <div class="ctas fu d4" style="margin-top:28px">
+        <button class="btn-primary">Iniciar primer reto</button>
+        <button class="btn-secondary">Ver cómo funciona</button>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="pipeline fu d5">
+        <span class="pipe-step">Reto real</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-step">Observación conductual</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-step">Medición</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-step active">Perfil verificado</span>
       </div>
     </div>
 
-    <!-- Right — card -->
-    <div class="card-zone">
-      <div class="profile-card card-in">
+    <!-- Right — challenge → profile (system flow) -->
+    <div class="card-zone" style="display:flex;flex-direction:column;gap:0;align-items:flex-end;">
+
+      <!-- Card 1: Challenge Preview — INPUT -->
+      <div class="card-in" style="width:100%;max-width:360px;animation-delay:0.1s">
+        <ChallengePreview />
+      </div>
+
+      <!-- Connector: reto → perfil -->
+      <div style="display:flex;align-items:center;justify-content:flex-end;width:100%;max-width:360px;padding:10px 28px;gap:8px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:0.10em;text-transform:uppercase;color:#CECECE">genera</span>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(107,45,94,0.15),rgba(107,45,94,0.40))"></div>
+        <span style="color:#CECECE;font-size:11px;transform:rotate(90deg);display:inline-block">↓</span>
+      </div>
+
+      <!-- Card 2: Execution Profile — OUTPUT -->
+      <div class="profile-card card-in" style="animation-delay:0.24s">
 
         <div class="card-head">
-          <span class="card-label">Preview de perfil</span>
+          <div>
+            <span class="card-label">Perfil de ejecución</span>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:0.08em;margin-top:2px;opacity:0.6">Generado por comportamiento observado</div>
+          </div>
           <div class="v-pill">
             <span class="v-dot"></span>
             Verificado
@@ -643,27 +757,28 @@ import '../styles/global.css';
 
         <div class="score-row">
           <div class="score-cell">
-            <div class="sc-val accent">94%</div>
-            <div class="sc-label">Match score</div>
+            <div class="sc-val accent">91</div>
+            <div class="sc-label">Índice de ejecución</div>
           </div>
           <div class="score-cell">
-            <div class="sc-val">Senior</div>
-            <div class="sc-label">Nivel</div>
+            <div class="sc-val" style="font-size:15px;font-weight:700;padding-top:4px;line-height:1.3">Alta<br/>autonomía</div>
+            <div class="sc-label" style="margin-top:4px">Perfil conductual</div>
           </div>
         </div>
 
-        <SkillBadge name="UX Research" level="Verificado"  percentage={92} />
-        <SkillBadge name="Leadership"  level="Soft Skill"  percentage={88} />
-        <SkillBadge name="Strategy"    level="Business"    percentage={74} />
+        <SkillBadge name="Adaptación al cambio"      level="Verificado"  percentage={94} type="verified"   />
+        <SkillBadge name="Razonamiento estructural"  level="Verificado"  percentage={88} type="verified"   />
+        <SkillBadge name="Fidelidad a instrucciones" level="En medición" percentage={76} type="developing" />
 
         <div class="card-foot">
           <span class="foot-icon">⊘</span>
-          <p class="foot-text">
-            <b>Solo tú decides</b> quién ve estos datos. Privado hasta que lo actives.
-          </p>
+          <p class="foot-text"><b>Basado en comportamiento real.</b> No en lo que declaras.</p>
         </div>
 
       </div>
+
+
+
     </div>
 
   </main>
@@ -673,25 +788,25 @@ import '../styles/global.css';
   <!-- PROCESS -->
   <section class="process">
     <div class="section-top">
-      <span class="s-eyebrow">Cómo funciona</span>
-      <h2 class="s-title">Un perfil que nadie puede falsear.</h2>
+      <span class="s-eyebrow">Cómo funciona el sistema</span>
+      <h2 class="s-title">Evidencia observable.<br/>No declaraciones.</h2>
     </div>
 
     <div class="steps">
       <div class="step">
         <div class="step-n">01</div>
-        <div class="step-t">Completa retos reales</div>
-        <p class="step-b">Situaciones de UX y toma de decisiones. <b>Sin formularios.</b> El sistema observa y mide.</p>
+        <div class="step-t">Reto de ejecución real</div>
+        <p class="step-b">Situaciones que simulan trabajo real. Sin formularios de personalidad. <b>El sistema observa cómo actúas,</b> no lo que dices de ti mismo.</p>
       </div>
       <div class="step">
         <div class="step-n">02</div>
-        <div class="step-t">El perfil se genera solo</div>
-        <p class="step-b">Los porcentajes los calcula el algoritmo. <b>Por eso son creíbles.</b> Por eso las empresas confían.</p>
+        <div class="step-t">Medición conductual</div>
+        <p class="step-b">El algoritmo analiza tu velocidad de adaptación, razonamiento estructural y fidelidad bajo presión. <b>Métricas generadas, no declaradas.</b></p>
       </div>
       <div class="step">
         <div class="step-n">03</div>
-        <div class="step-t">Tú controlas la visibilidad</div>
-        <p class="step-b">Activa cuando quieras, para quien elijas. <b>Sin sorpresas.</b> Tus datos, bajo tu control.</p>
+        <div class="step-t">Perfil verificado</div>
+        <p class="step-b">Recibes un perfil de ejecución basado en evidencia observable. Tú decides cuándo y con quién compartirlo. <b>Sin intermediarios.</b></p>
       </div>
     </div>
   </section>
@@ -700,28 +815,28 @@ import '../styles/global.css';
   <section class="cta-band">
     <div class="cta-inner">
       <div>
-        <h2 class="cta-h">Tu talento<br/>habla<br/><em>por ti.</em></h2>
-        <p class="cta-p">Únete a la beta. Los primeros perfiles verificados tienen ventaja cuando lleguen las empresas.</p>
+        <h2 class="cta-h">El CV<br/>ya no es<br/><em>suficiente</em></h2>
+        <p class="cta-p">Las empresas no necesitan saber lo que declaras. Necesitan saber cómo actúas. Corata genera esa evidencia.</p>
       </div>
       <div class="cta-right">
         <div class="trust-item">
-          <span class="t-label">Sin CV</span>
-          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0F0F0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
+          <span class="t-label">Sin CV ni LinkedIn</span>
+          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
         </div>
         <div class="trust-item">
-          <span class="t-label">Tú controlas tus datos</span>
-          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0F0F0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
+          <span class="t-label">Basado en comportamiento, no declaraciones</span>
+          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
         </div>
         <div class="trust-item">
-          <span class="t-label">Siempre gratis para candidatxs</span>
-          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0F0F0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
+          <span class="t-label">Siempre gratuito para candidatxs</span>
+          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
         </div>
         <div class="trust-item">
-          <span class="t-label">Perfil verificado, no declarado</span>
-          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0F0F0E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
+          <span class="t-label">Tú controlas quién ve tu perfil</span>
+          <div class="t-check"><svg viewBox="0 0 12 12" fill="none" stroke="#0D0D0B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg></div>
         </div>
         <button class="btn-cta">
-          Crear mi perfil gratis
+          Iniciar primer reto gratuita
           <span class="arr">↗</span>
         </button>
       </div>
