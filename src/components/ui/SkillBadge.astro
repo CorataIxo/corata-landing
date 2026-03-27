@@ -1,0 +1,45 @@
+---
+interface Props {
+  name: string;
+  level: string;
+  percentage: number;
+  type?: 'verified' | 'developing';
+}
+const { name, level, percentage } = Astro.props;
+
+// Bar + dot color by level — green verified, yellow developing, red low
+let barColor: string;
+if (percentage >= 85)      barColor = '#007A63';  // green — verified
+else if (percentage >= 65) barColor = '#B08A00';  // amber — developing
+else                       barColor = '#C0392B';  // red — alert
+
+// Percentage always in eggplant — the system accent
+const pctColor = '#6B2D5E';
+---
+
+<div
+  style="display:flex;align-items:center;gap:13px;padding:14px 22px;border-bottom:1px solid #EBEBEA;transition:background 0.16s;cursor:default;"
+  onmouseover="this.style.background='rgba(107,45,94,0.03)'"
+  onmouseout="this.style.background='transparent'"
+>
+  <!-- Status dot — bar color -->
+  <div style={`width:6px;height:6px;border-radius:50%;background:${barColor};flex-shrink:0`}></div>
+
+  <div style="flex:1;min-width:0">
+    <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#0D0D0B;line-height:1.2;margin:0">{name}</p>
+    <p style={`font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.09em;text-transform:uppercase;color:${barColor};opacity:0.8;margin:2px 0 0`}>{level}</p>
+  </div>
+
+  <div style="text-align:right;flex-shrink:0">
+    <!-- Percentage in eggplant — the accent -->
+    <p style={`font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:-0.02em;color:${pctColor};margin:0`}>{percentage}%</p>
+    <!-- Bar in status color -->
+    <div style="width:44px;height:2px;background:#EBEBEA;border-radius:2px;margin-top:6px;overflow:hidden">
+      <div style={`height:100%;width:${percentage}%;background:${barColor};border-radius:2px;animation:growBar 1.4s cubic-bezier(.16,1,.3,1) forwards`}></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes growBar { from { width: 0 !important; } }
+</style>

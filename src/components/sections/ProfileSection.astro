@@ -1,0 +1,90 @@
+---
+---
+
+<section class="content-block">
+  <div>
+    <div class="block-kicker">Perfil de ejecución</div>
+    <h2 class="block-h">Un perfil que se<br/>construye solo</h2>
+    <div class="block-body">
+      <p>Tu perfil no se escribe. Se construye a partir de <b>cómo resuelves retos, cómo tomas decisiones</b> y cómo evolucionas con el tiempo.</p>
+      <p>No tienes que adivinar qué quieren leer las empresas ni intentar resumirte en un documento. Simplemente interactúas con la plataforma y tu perfil profesional va tomando forma de manera natural.</p>
+      <p><b>Un registro vivo de cómo trabajas realmente.</b></p>
+    </div>
+    <div class="block-callout">
+      Tu perfil evoluciona contigo.<br/>
+      <b>Cada reto completado revela más de cómo trabajas.</b>
+    </div>
+  </div>
+  <div class="radar-wrap">
+    <span class="bv-label" style="margin-bottom:16px;display:block">Perfil de ejecución · En evolución</span>
+    <div class="radar-container">
+      <svg id="radar-svg" viewBox="-10 0 300 270" width="300" height="270">
+        <!-- Grid rings -->
+        <polygon points="140,40 231,95 231,185 140,240 49,185 49,95"
+          fill="rgba(107,45,94,0.04)" stroke="rgba(107,45,94,0.18)" stroke-width="1"/>
+        <polygon points="140,72 210,111 210,169 140,208 70,169 70,111"
+          fill="rgba(107,45,94,0.06)" stroke="rgba(107,45,94,0.14)" stroke-width="1"/>
+        <polygon points="140,104 189,127 189,153 140,176 91,153 91,127"
+          fill="rgba(107,45,94,0.09)" stroke="rgba(107,45,94,0.10)" stroke-width="1"/>
+        <!-- Axes -->
+        <line x1="140" y1="40"  x2="140" y2="240" stroke="rgba(107,45,94,0.15)" stroke-width="1"/>
+        <line x1="49"  y1="95"  x2="231" y2="185" stroke="rgba(107,45,94,0.15)" stroke-width="1"/>
+        <line x1="231" y1="95"  x2="49"  y2="185" stroke="rgba(107,45,94,0.15)" stroke-width="1"/>
+        <!-- Data polygon -->
+        <polygon id="radar-poly"
+          points="140,51 218,103 205,173 140,218 75,170 63,100"
+          fill="rgba(107,45,94,0.18)" stroke="#6B2D5E" stroke-width="2"
+          stroke-linejoin="round"/>
+        <!-- Axis labels -->
+        <text x="140" y="28"  text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9A9A92" letter-spacing="0.06em">ADAPTACIÓN</text>
+        <text x="238" y="90"  text-anchor="start"   font-family="IBM Plex Mono,monospace" font-size="8" fill="#9A9A92" letter-spacing="0.06em">ESTRUCTURA</text>
+        <text x="238" y="192" text-anchor="start"   font-family="IBM Plex Mono,monospace" font-size="8" fill="#9A9A92" letter-spacing="0.06em">DECISIÓN</text>
+        <text x="140" y="260" text-anchor="middle"  font-family="IBM Plex Mono,monospace" font-size="8" fill="#9A9A92" letter-spacing="0.06em">AUTONOMÍA</text>
+        <text x="42"  y="192" text-anchor="end"     font-family="IBM Plex Mono,monospace" font-size="8" fill="#9A9A92" letter-spacing="0.06em">PRESIÓN</text>
+        <text x="42"  y="90"  text-anchor="end"     font-family="IBM Plex Mono,monospace" font-size="8" fill="#9A9A92" letter-spacing="0.06em">FIDELIDAD</text>
+        <!-- Data points -->
+        <circle class="radar-dot" cx="140" cy="51"  r="5" fill="#6B2D5E" data-skill="Adaptación al cambio"     data-val="94"/>
+        <circle class="radar-dot" cx="218" cy="103" r="5" fill="#6B2D5E" data-skill="Razonamiento estructural"  data-val="88"/>
+        <circle class="radar-dot" cx="205" cy="173" r="5" fill="#6B2D5E" data-skill="Toma de decisiones"        data-val="81"/>
+        <circle class="radar-dot" cx="140" cy="218" r="5" fill="#6B2D5E" data-skill="Autonomía"                 data-val="87"/>
+        <circle class="radar-dot" cx="75"  cy="170" r="5" fill="#6B2D5E" data-skill="Gestión bajo presión"      data-val="73"/>
+        <circle class="radar-dot" cx="63"  cy="100" r="5" fill="#6B2D5E" data-skill="Fidelidad a instrucciones" data-val="76"/>
+      </svg>
+      <!-- Tooltip -->
+      <div id="radar-tooltip" class="radar-tooltip" style="opacity:0">
+        <span id="rt-name" class="rt-name"></span>
+        <span id="rt-val"  class="rt-val"></span>
+      </div>
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--muted);margin-top:12px;line-height:1.5;text-align:center">Basado en comportamiento observado · No en declaraciones</div>
+  </div>
+</section>
+
+<script>
+  const dots     = document.querySelectorAll('.radar-dot');
+  const tooltip  = document.getElementById('radar-tooltip');
+  const rtName   = document.getElementById('rt-name');
+  const rtVal    = document.getElementById('rt-val');
+  const container = document.querySelector('.radar-container');
+
+  dots.forEach(dot => {
+    dot.addEventListener('mouseenter', () => {
+      const skill = (dot as SVGCircleElement).dataset.skill;
+      const val   = (dot as SVGCircleElement).dataset.val;
+      const cx    = parseFloat((dot as SVGCircleElement).getAttribute('cx')!);
+      const cy    = parseFloat((dot as SVGCircleElement).getAttribute('cy')!);
+      rtName!.textContent = skill!;
+      rtVal!.textContent  = val + '%';
+      const svgRect  = container!.querySelector('svg')!.getBoundingClientRect();
+      const contRect = container!.getBoundingClientRect();
+      const scaleX = svgRect.width  / 280;
+      const scaleY = svgRect.height / 280;
+      (tooltip as HTMLElement).style.left    = (cx * scaleX + (svgRect.left - contRect.left)) + 'px';
+      (tooltip as HTMLElement).style.top     = (cy * scaleY + (svgRect.top  - contRect.top))  + 'px';
+      (tooltip as HTMLElement).style.opacity = '1';
+    });
+    dot.addEventListener('mouseleave', () => {
+      (tooltip as HTMLElement).style.opacity = '0';
+    });
+  });
+</script>

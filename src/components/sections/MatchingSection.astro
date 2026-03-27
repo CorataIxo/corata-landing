@@ -1,0 +1,29 @@
+---
+---
+
+<section class="content-block">
+  <div>
+    <div class="block-kicker">Matching real</div>
+    <h2 class="block-h">Encontrar equipos<br/>realmente afines</h2>
+    <div class="block-body">
+      <p>Las empresas tampoco se presentan aquí con un simple anuncio de empleo. <b>Construyen su propio perfil:</b> cómo trabajan, cómo toman decisiones, cómo se organizan.</p>
+      <p>Con esa información se generan probabilidades de afinidad entre perfiles y equipos. En lugar de enviar currículums a decenas de ofertas, <b>empiezan a aparecer oportunidades donde el encaje es mucho más natural.</b></p>
+      <p>Y tú decides si quieres mostrar tu perfil o no.</p>
+    </div>
+  </div>
+  <div class="matching-visual">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Afinidad de perfil · Ejemplos</div>
+    {[
+      {score:'94%', co:'Startup de producto · Serie A', tag:'Alta afinidad'},
+      {score:'87%', co:'Scale-up de datos · Remoto', tag:'Alta afinidad'},
+      {score:'71%', co:'Consultora tecnológica', tag:'Afinidad media'},
+    ].map(m => (
+      <div class="match-row">
+        <span class="match-score">{m.score}</span>
+        <span class="match-co">{m.co}</span>
+        <span class="match-tag">{m.tag}</span>
+      </div>
+    ))}
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--muted);margin-top:4px;line-height:1.55">Tú controlas quién ve tu perfil y cuándo.</div>
+  </div>
+</section>

@@ -1,0 +1,232 @@
+---
+export const prerender = false;
+
+import MainLayout from '../layouts/MainLayout.astro';
+import { createSupabaseServerClient } from '../lib/supabase/server';
+
+let errorMsg: string | null = Astro.url.searchParams.get('error');
+
+if (Astro.request.method === 'POST') {
+  const form   = await Astro.request.formData();
+  const nombre = String(form.get('nombre') ?? '').trim();
+  const email  = String(form.get('email')  ?? '').trim();
+  const pass   = String(form.get('password') ?? '');
+
+  const supabase = createSupabaseServerClient(Astro.request, Astro.cookies);
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password: pass,
+    options: { data: { display_name: nombre } },
+  });
+
+  if (error) {
+    errorMsg = error.message;
+  } else {
+    return Astro.redirect('/dashboard');
+  }
+}
+---
+
+<MainLayout title="Crear tu perfil — Corata">
+
+  <div class="reg-page">
+
+    <a href="/" class="reg-back">← Corata</a>
+
+    <div class="reg-card">
+
+      <div class="reg-head">
+        <span class="reg-eyebrow">Perfil de ejecución</span>
+        <h1 class="reg-title">Empieza tu perfil</h1>
+        <p class="reg-sub">Crea tu cuenta para acceder a los retos y construir tu perfil verificado.</p>
+      </div>
+
+      {errorMsg && (
+        <div class="reg-error">{errorMsg}</div>
+      )}
+
+      <form class="reg-form" method="post">
+
+        <div class="reg-field">
+          <label class="reg-label" for="nombre">Nombre</label>
+          <input class="reg-input" type="text" id="nombre" name="nombre"
+            placeholder="Tu nombre" autocomplete="given-name" required />
+        </div>
+
+        <div class="reg-field">
+          <label class="reg-label" for="email">Correo electrónico</label>
+          <input class="reg-input" type="email" id="email" name="email"
+            placeholder="tu@email.com" autocomplete="email" required />
+        </div>
+
+        <div class="reg-field">
+          <label class="reg-label" for="password">Contraseña</label>
+          <input class="reg-input" type="password" id="password" name="password"
+            placeholder="Mínimo 8 caracteres" autocomplete="new-password" required minlength="8" />
+        </div>
+
+        <button type="submit" class="reg-submit">
+          Crear mi perfil
+          <span>↗</span>
+        </button>
+
+      </form>
+
+      <p class="reg-login">
+        ¿Ya tienes cuenta? <a href="/login">Accede aquí</a>
+      </p>
+
+    </div>
+
+  </div>
+
+</MainLayout>
+
+<style>
+  .reg-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    background: var(--bg);
+  }
+
+  .reg-back {
+    position: fixed;
+    top: 24px;
+    left: 32px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .reg-back:hover { color: var(--dark); }
+
+  .reg-card {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.03),
+      0 4px 16px rgba(0,0,0,0.06),
+      0 16px 48px rgba(0,0,0,0.07);
+  }
+
+  .reg-head { margin-bottom: 32px; }
+
+  .reg-eyebrow {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .reg-title {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .reg-sub {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  .reg-error {
+    background: rgba(192,57,43,0.07);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #C0392B;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .reg-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .reg-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .reg-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .reg-input {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--bg);
+    border: 1.5px solid var(--rule);
+    border-radius: 10px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  .reg-input::placeholder { color: var(--muted); }
+  .reg-input:focus { border-color: var(--trop); }
+
+  .reg-submit {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    background: var(--trop);
+    border: none;
+    border-radius: 10px;
+    padding: 15px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.18s;
+    margin-top: 4px;
+    box-shadow: 0 4px 20px var(--trop-glow);
+  }
+  .reg-submit:hover {
+    background: var(--trop-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px var(--trop-glow);
+  }
+
+  .reg-login {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .reg-login a {
+    color: var(--trop);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .reg-login a:hover { text-decoration: underline; }
+</style>

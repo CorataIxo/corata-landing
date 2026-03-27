@@ -1,0 +1,355 @@
+---
+---
+
+<div class="ch-card">
+
+  <div class="ch-head">
+    <div>
+      <span class="ch-label">Reto activo</span>
+      <span class="ch-sublabel" id="ch-mechanic-label">Priorización bajo presión</span>
+    </div>
+    <div class="ch-dots">
+      <span class="ch-dot active" id="dot-0"></span>
+      <span class="ch-dot" id="dot-1"></span>
+      <span class="ch-dot" id="dot-2"></span>
+    </div>
+  </div>
+
+  <div class="ch-bodies">
+  <!-- ── RETO 0: Priorización — formato kanban comprimido ── -->
+  <div class="ch-body active" id="ch-0">
+    <p class="ch-context">Gestionas cuatro tareas abiertas. <strong>A las 14:32, llega un evento crítico inesperado.</strong> Tienes que reorganizar.</p>
+    <div class="ch-board">
+      <div class="ch-col">
+        <div class="ch-col-label">Activo</div>
+        <div class="ch-task high">Informe cliente</div>
+        <div class="ch-task">Error en sistema</div>
+        <div class="ch-task low">Documentación</div>
+      </div>
+      <div class="ch-col">
+        <div class="ch-col-label">Entrante</div>
+        <div class="ch-task critical">
+          <span class="ch-alert">!</span>
+          Fallo crítico en producción
+        </div>
+      </div>
+    </div>
+    <div class="ch-measure">Mide: adaptación, criterio de priorización, velocidad de decisión.</div>
+  </div>
+
+  <!-- ── RETO 1: Flujo con error — formato diagrama ── -->
+  <div class="ch-body" id="ch-1">
+    <p class="ch-context">Este flujo de trabajo genera fallos en producción de forma intermitente. <strong>Identifica el error estructural.</strong></p>
+    <div class="ch-diagram">
+      <div class="ch-node ok"><span class="ch-nnum">1</span> Recibir solicitud</div>
+      <div class="ch-arrow">↓</div>
+      <div class="ch-node ok"><span class="ch-nnum">2</span> Aprobar internamente</div>
+      <div class="ch-arrow err-arrow">↓</div>
+      <div class="ch-node err"><span class="ch-nnum">3</span> Ejecutar tarea</div>
+      <div class="ch-node-note">⚑ El sistema detecta que faltan datos antes de este paso</div>
+      <div class="ch-arrow">↓</div>
+      <div class="ch-node ok"><span class="ch-nnum">4</span> Validar y entregar</div>
+    </div>
+    <div class="ch-measure">Mide: razonamiento estructural, identificación de causa raíz.</div>
+  </div>
+
+  <!-- ── RETO 2: Ambigüedad — formato decisión con trade-offs ── -->
+  <div class="ch-body" id="ch-2">
+    <p class="ch-context">Cliente solicita informe urgente. <strong>Sin formato, sin datos, sin respuesta.</strong> 4 horas disponibles.</p>
+    <div class="ch-decisions">
+      <div class="ch-decision">
+        <div class="ch-dec-head">
+          <span class="ch-dec-tag">A</span>
+          <span class="ch-dec-title">Esperar confirmación</span>
+        </div>
+        <div class="ch-dec-trade">Riesgo: incumplir plazo</div>
+      </div>
+      <div class="ch-decision">
+        <div class="ch-dec-head">
+          <span class="ch-dec-tag">B</span>
+          <span class="ch-dec-title">Formato estándar con supuestos</span>
+        </div>
+        <div class="ch-dec-trade">Riesgo: formato incorrecto</div>
+      </div>
+      <div class="ch-decision">
+        <div class="ch-dec-head">
+          <span class="ch-dec-tag">C</span>
+          <span class="ch-dec-title">Escalar al responsable</span>
+        </div>
+        <div class="ch-dec-trade">Riesgo: depender de terceros</div>
+      </div>
+    </div>
+    <div class="ch-measure">Mide: autonomía, interpretación, toma de decisión bajo incertidumbre.</div>
+  </div>
+  </div><!-- end ch-bodies -->
+
+</div>
+
+<style>
+  .ch-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.03),
+      0 4px 12px rgba(0,0,0,0.05),
+      0 16px 40px rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .ch-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: #6B2D5E;
+    border-radius: 20px 20px 0 0;
+    z-index: 2;
+  }
+
+  /* Head */
+  .ch-head {
+    padding: 15px 20px 13px;
+    border-bottom: 1px solid #EBEBEA;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .ch-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9A9A92;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .ch-sublabel {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B2D5E;
+    opacity: 0.9;
+    display: block;
+  }
+  .ch-dots { display: flex; gap: 5px; margin-top: 3px; }
+  .ch-dot { width: 5px; height: 5px; border-radius: 50%; background: #EBEBEA; transition: background 0.4s; }
+  .ch-dot.active { background: #6B2D5E; }
+
+  /* Body — grid stack: all panels in same cell, always rendered, no layout shift */
+  .ch-bodies {
+    display: grid;
+  }
+  .ch-body {
+    grid-area: 1 / 1;
+    padding: 16px 20px 18px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .ch-body.active {
+    opacity: 1;
+    pointer-events: auto;
+    animation: chIn 0.35s ease;
+  }
+  @keyframes chIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .ch-context {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: #555550;
+    margin: 0 0 14px;
+  }
+  .ch-context strong { font-weight: 600; color: #0D0D0B; }
+
+  /* ── RETO 0: Kanban ── */
+  .ch-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .ch-col { display: flex; flex-direction: column; gap: 5px; }
+  .ch-col-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: #CECECE;
+    margin-bottom: 2px;
+  }
+  .ch-task {
+    font-size: 11px;
+    font-weight: 500;
+    color: #555550;
+    background: #F7F5F1;
+    border: 1px solid #EBEBEA;
+    border-radius: 7px;
+    padding: 7px 10px;
+    line-height: 1.3;
+    border-left: 2.5px solid #EBEBEA;
+  }
+  .ch-task.high { border-left-color: #007A63; }
+  .ch-task.low  { border-left-color: #EBEBEA; opacity: 0.5; }
+  .ch-task.critical {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(192,57,43,0.25);
+    border-left: 2.5px solid #C0392B;
+    background: rgba(192,57,43,0.05);
+    color: #0D0D0B;
+    font-weight: 600;
+    animation: pulseIn 0.5s ease;
+  }
+  @keyframes pulseIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
+  .ch-alert {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #C0392B;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── RETO 1: Diagrama ── */
+  .ch-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    margin-bottom: 14px;
+  }
+  .ch-node {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555550;
+    background: #F7F5F1;
+    border: 1px solid #EBEBEA;
+    border-radius: 8px;
+    padding: 8px 14px;
+    width: 100%;
+  }
+  .ch-node.err {
+    background: rgba(107,45,94,0.07);
+    border-color: rgba(107,45,94,0.28);
+    color: #6B2D5E;
+    font-weight: 600;
+  }
+  .ch-nnum {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: #CECECE;
+    min-width: 12px;
+    flex-shrink: 0;
+  }
+  .ch-node.err .ch-nnum { color: #6B2D5E; opacity: 0.5; }
+  .ch-arrow {
+    font-size: 11px;
+    color: #D4D4D0;
+    padding-left: 20px;
+    line-height: 1;
+  }
+  .ch-arrow.err-arrow { color: rgba(107,45,94,0.4); }
+  .ch-node-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    color: #6B2D5E;
+    opacity: 0.7;
+    padding: 4px 14px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── RETO 2: Decisiones con trade-offs ── */
+  .ch-decisions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .ch-decision {
+    background: #F7F5F1;
+    border: 1px solid #EBEBEA;
+    border-radius: 9px;
+    padding: 10px 14px;
+    transition: border-color 0.15s, background 0.15s;
+    cursor: default;
+  }
+  .ch-decision:hover {
+    border-color: rgba(107,45,94,0.22);
+    background: rgba(107,45,94,0.03);
+  }
+  .ch-dec-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 4px;
+  }
+  .ch-dec-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    color: #6B2D5E;
+    background: rgba(107,45,94,0.10);
+    border-radius: 4px;
+    padding: 2px 6px;
+    flex-shrink: 0;
+  }
+  .ch-dec-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0D0D0B;
+    line-height: 1.3;
+  }
+  .ch-dec-trade {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.06em;
+    color: #9A9A92;
+    padding-left: 28px;
+  }
+
+  /* Measurement footer */
+  .ch-measure {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.06em;
+    color: #CECECE;
+    border-top: 1px solid #EBEBEA;
+    padding-top: 11px;
+    line-height: 1.55;
+  }
+</style>
+
+<script>
+  const bodies = [0,1,2].map(i => document.getElementById('ch-' + i));
+  const dots   = [0,1,2].map(i => document.getElementById('dot-' + i));
+  const labels = [
+    'Priorización bajo presión',
+    'Razonamiento estructural',
+    'Autonomía e interpretación'
+  ];
+  const mechEl = document.getElementById('ch-mechanic-label');
+  let current  = 0;
+
+  function show(idx) {
+    bodies.forEach((b,i) => b.classList.toggle('active', i === idx));
+    dots.forEach((d,i)   => d.classList.toggle('active', i === idx));
+    if (mechEl) mechEl.textContent = labels[idx];
+    current = idx;
+  }
+
+  setInterval(() => show((current + 1) % 3), 5500);
+</script>

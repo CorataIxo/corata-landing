@@ -1,0 +1,100 @@
+---
+import SkillBadge from '../ui/SkillBadge.astro';
+import ChallengePreview from '../ui/ChallengePreview.astro';
+---
+
+<main class="hero">
+
+  <!-- Left -->
+  <div>
+    <div class="eyebrow fu d1">Perfil de ejecución verificado</div>
+
+    <h1 class="fu d2">
+      Tu talento es<br/>
+      <span class="hl">más que un CV</span>
+    </h1>
+
+    <p class="hero-sub fu d3">
+      Resuelve retos reales y crea tu <b>perfil de ejecución verificado: </b>la nueva forma de aplicar a oportunidades.<br/>
+    </p>
+
+    <!-- Scenario preview -->
+    <div class="scenario-box fu d3">
+      <div class="scenario-tag">Ejemplo de reto</div>
+      <p class="scenario-text">
+        Gestionas varias tareas. A mitad del tiempo, <em>las prioridades cambian por un evento externo.</em>
+        El sistema mide tu velocidad de adaptación y tu razonamiento estructural.
+      </p>
+    </div>
+
+    <div class="ctas fu d4" style="margin-top:28px">
+      <a href="/registro" class="btn-primary">Crear mi perfil</a>
+      <button class="btn-secondary">Ver cómo funciona</button>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="pipeline fu d5">
+      <span class="pipe-step">Reto real</span>
+      <span class="pipe-arrow">→</span>
+      <span class="pipe-step">Observación conductual</span>
+      <span class="pipe-arrow">→</span>
+      <span class="pipe-step">Medición</span>
+      <span class="pipe-arrow">→</span>
+      <span class="pipe-step active">Perfil verificado</span>
+    </div>
+  </div>
+
+  <!-- Right — challenge → profile (system flow) -->
+  <div class="card-zone">
+
+    <!-- Card 1: Execution Profile -->
+    <div class="profile-card card-in" style="animation-delay:0.1s">
+
+      <div class="card-head">
+        <div>
+          <span class="card-label">Perfil de ejecución</span>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:0.08em;margin-top:2px;opacity:0.6">Generado por comportamiento observado</div>
+        </div>
+        <div class="v-pill">
+          <span class="v-dot"></span>
+          Verificado
+        </div>
+      </div>
+
+      <div class="score-row">
+        <div class="score-cell">
+          <div class="sc-val accent">91%</div>
+          <div class="sc-label">Índice de ejecución</div>
+        </div>
+        <div class="score-cell">
+          <div class="sc-val" style="font-size:15px;font-weight:700;padding-top:4px;line-height:1.3">Alta<br/>autonomía</div>
+          <div class="sc-label" style="margin-top:4px">Perfil conductual</div>
+        </div>
+      </div>
+
+      <SkillBadge name="Adaptación al cambio"      level="Verificado"  percentage={94} type="verified"   />
+      <SkillBadge name="Razonamiento estructural"  level="Verificado"  percentage={88} type="verified"   />
+      <SkillBadge name="Fidelidad a instrucciones" level="En medición" percentage={76} type="developing" />
+
+      <div class="card-foot">
+        <span class="foot-icon">⊘</span>
+        <p class="foot-text"><b>Perfil vivo.</b> Evoluciona con cada reto que completas.</p>
+      </div>
+
+    </div>
+
+    <!-- Connector -->
+    <div style="display:flex;align-items:center;width:100%;max-width:360px;padding:9px 28px;gap:8px;">
+      <span style="color:#D4D4D0;font-size:10px;">↑</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(0,0,0,0.10),rgba(0,0,0,0.04))"></div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:0.10em;text-transform:uppercase;color:#CECECE">generado por</span>
+    </div>
+
+    <!-- Card 2: Challenge Preview -->
+    <div class="card-in" style="width:100%;max-width:360px;animation-delay:0.26s;">
+      <ChallengePreview />
+    </div>
+
+  </div>
+
+</main>

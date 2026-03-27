@@ -1,0 +1,35 @@
+---
+---
+
+<section class="content-block reverse" style="background:rgba(0,0,0,0.015);">
+  <div>
+    <div class="block-kicker">Entrenamiento</div>
+    <h2 class="block-h">Un lugar para<br/>entrenar cómo piensas</h2>
+    <div class="block-body">
+      <p>Corata no solo evalúa. <b>También te ayuda a mejorar.</b></p>
+      <p>A través de retos y simulaciones puedes entrenar habilidades que importan de verdad en el trabajo:</p>
+    </div>
+    <div class="block-list">
+      {['Pensamiento estructurado','Toma de decisiones','Organización bajo presión','Adaptación a cambios imprevistos'].map(item => (
+        <div class="block-list-item">{item}</div>
+      ))}
+    </div>
+    <div class="block-body">
+      <p><b>Cada reto que completas no solo revela cómo trabajas. También te ayuda a trabajar mejor.</b></p>
+    </div>
+  </div>
+  <div class="trainer-pills">
+    {[
+      {icon:'🎯', name:'Retos de decisión', desc:'Situaciones reales con información incompleta'},
+      {icon:'⚡', name:'Presión y tiempo', desc:'Reorganiza prioridades cuando todo cambia'},
+      {icon:'🔍', name:'Análisis estructural', desc:'Detecta errores en flujos y procesos'},
+      {icon:'🧭', name:'Ambigüedad', desc:'Actúa cuando las instrucciones no son claras'},
+    ].map(p => (
+      <div class="trainer-pill">
+        <span class="tp-icon">{p.icon}</span>
+        <span class="tp-name">{p.name}</span>
+        <span class="tp-desc">{p.desc}</span>
+      </div>
+    ))}
+  </div>
+</section>
