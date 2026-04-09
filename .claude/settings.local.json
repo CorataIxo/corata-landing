@@ -9,7 +9,12 @@
       "Bash(BASE=\"//wsl.localhost/Ubuntu/home/africa/corata-landing/src/components\")",
       "Bash(mkdir -p \"$BASE/ui\" \"$BASE/sections\")",
       "Bash(mv \"$BASE/SkillBadge.astro\" \"$BASE/ChallengePreview.astro\" \"$BASE/OverviewCard.astro\" \"$BASE/ui/\")",
-      "Bash(mv \"$BASE/HeroSection.astro\" \"$BASE/BridgeSection.astro\" \"$BASE/ProblemSection.astro\" \"$BASE/ProfileSection.astro\" \"$BASE/TrainerSection.astro\" \"$BASE/MatchingSection.astro\" \"$BASE/PhilosophySection.astro\" \"$BASE/CtaBand.astro\" \"$BASE/sections/\")"
+      "Bash(mv \"$BASE/HeroSection.astro\" \"$BASE/BridgeSection.astro\" \"$BASE/ProblemSection.astro\" \"$BASE/ProfileSection.astro\" \"$BASE/TrainerSection.astro\" \"$BASE/MatchingSection.astro\" \"$BASE/PhilosophySection.astro\" \"$BASE/CtaBand.astro\" \"$BASE/sections/\")",
+      "Bash(wsl pip3:*)",
+      "Bash(wsl bash:*)"
+    ],
+    "additionalDirectories": [
+      "\\\\wsl.localhost\\Ubuntu\\tmp"
     ]
   }
 }
