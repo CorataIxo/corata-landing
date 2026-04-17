@@ -5,6 +5,7 @@
 /* ── VARIABLES ── */
 :root {
   /* Trop (verde) */
+  --trop-light:    #05A381
   --trop:          #00745b;
   --trop-deep:     #005a47;
   --trop-dim:      rgba(0,116,91,0.12);
@@ -229,7 +230,7 @@ h1 .hl::after {
   color: var(--bg);
   text-decoration: none;
   display: inline-block;
-  background: var(--berry);
+  background: #D4AF37;
   border: none;
   padding: 18px 40px;
   border-radius: 10px;
@@ -243,7 +244,7 @@ h1 .hl::after {
 .btn-primary:hover {
   background: var(--berry-deep);
   transform: translateY(-2px);
-  box-shadow: 0 10px 32px rgba(107,45,94,0.45);
+  box-shadow: 0 10px 32px rgba(217, 238, 136, 0.45);
 }
 
 .btn-secondary {
