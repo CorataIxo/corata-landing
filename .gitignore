@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Vercel CLI cache
+.vercel/
+
+# VSCode workspace files
+*.code-workspace
