@@ -1,0 +1,297 @@
+---
+/**
+ * LeadForm — Formulario de captura de leads para la landing.
+ *
+ * Se comunica con el backend REST (POST /api/leads) vía fetch desde el cliente.
+ * La URL del backend se inyecta en build-time desde PUBLIC_API_URL para que
+ * funcione tanto en desarrollo local como en producción sin cambiar código.
+ *
+ * Diseñado para usarse sobre fondo oscuro (CtaBand).
+ */
+const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:3000';
+---
+
+<div class="lf-wrap">
+  <!-- Formulario (se oculta tras envío exitoso) -->
+  <form id="lead-form" novalidate data-api-url={apiUrl}>
+    <div class="lf-fields">
+      <div class="lf-group">
+        <label class="lf-label" for="lf-name">Nombre</label>
+        <input
+          id="lf-name"
+          name="name"
+          type="text"
+          class="lf-input"
+          placeholder="Tu nombre"
+          autocomplete="given-name"
+          required
+          minlength="2"
+        />
+      </div>
+      <div class="lf-group">
+        <label class="lf-label" for="lf-email">Email de trabajo</label>
+        <input
+          id="lf-email"
+          name="email"
+          type="email"
+          class="lf-input"
+          placeholder="tu@empresa.com"
+          autocomplete="email"
+          required
+        />
+      </div>
+      <div class="lf-group">
+        <label class="lf-label" for="lf-company">Empresa</label>
+        <input
+          id="lf-company"
+          name="company"
+          type="text"
+          class="lf-input"
+          placeholder="Nombre de tu empresa"
+          autocomplete="organization"
+        />
+      </div>
+      <div class="lf-group">
+        <label class="lf-label" for="lf-message">¿Qué buscas? <span class="lf-optional">(opcional)</span></label>
+        <textarea
+          id="lf-message"
+          name="message"
+          class="lf-input lf-textarea"
+          placeholder="Cuéntanos brevemente qué tipo de talento evalúas o qué proceso quieres mejorar"
+          rows="3"
+        ></textarea>
+      </div>
+    </div>
+
+    <button type="submit" id="lf-submit" class="lf-btn">
+      <span id="lf-btn-text">Solicitar acceso anticipado</span>
+      <span id="lf-btn-icon" class="arr">↗</span>
+    </button>
+
+    <!-- Mensaje de error (accesible con aria-live) -->
+    <p id="lf-error" class="lf-error" aria-live="polite" hidden></p>
+  </form>
+
+  <!-- Estado de éxito (oculto hasta que el envío sea correcto) -->
+  <div id="lf-success" class="lf-success" hidden>
+    <div class="ls-icon">✓</div>
+    <p class="ls-title">¡Apuntado!</p>
+    <p class="ls-body">Te avisamos en cuanto abramos acceso anticipado.</p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('lead-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('lf-submit') as HTMLButtonElement | null;
+  const btnText = document.getElementById('lf-btn-text');
+  const btnIcon = document.getElementById('lf-btn-icon');
+  const errorEl = document.getElementById('lf-error');
+  const successEl = document.getElementById('lf-success');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form || !submitBtn || !errorEl || !successEl) return;
+
+    const apiUrl = form.dataset.apiUrl ?? 'http://localhost:3000';
+    const formData = new FormData(form);
+    const name = (formData.get('name') as string | null)?.trim() ?? '';
+    const email = (formData.get('email') as string | null)?.trim() ?? '';
+    const company = (formData.get('company') as string | null)?.trim() || undefined;
+    const message = (formData.get('message') as string | null)?.trim() || undefined;
+
+    // Validación client-side (refuerza la del servidor)
+    if (name.length < 2) {
+      showError('El nombre debe tener al menos 2 caracteres.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('Introduce un email válido.');
+      return;
+    }
+
+    setLoading(true);
+    hideError();
+
+    try {
+      const response = await fetch(`${apiUrl}/api/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, company, message, source: 'landing' }),
+      });
+
+      if (response.ok) {
+        form.hidden = true;
+        successEl.hidden = false;
+        return;
+      }
+
+      // El servidor devolvió un error con body JSON
+      const body = await response.json().catch(() => ({})) as Record<string, unknown>;
+      const details = body?.details as Record<string, string[]> | undefined;
+      const msg = details
+        ? Object.values(details).flat().join(' ')
+        : 'Algo salió mal. Inténtalo de nuevo.';
+      showError(msg);
+
+    } catch {
+      showError('Error de conexión. Comprueba tu red e inténtalo de nuevo.');
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  function setLoading(loading: boolean): void {
+    if (!submitBtn || !btnText || !btnIcon) return;
+    submitBtn.disabled = loading;
+    btnText.textContent = loading ? 'Enviando...' : 'Solicitar acceso anticipado';
+    (btnIcon as HTMLElement).style.opacity = loading ? '0' : '1';
+  }
+
+  function showError(msg: string): void {
+    if (!errorEl) return;
+    errorEl.textContent = msg;
+    errorEl.hidden = false;
+  }
+
+  function hideError(): void {
+    if (!errorEl) return;
+    errorEl.hidden = true;
+  }
+</script>
+
+<style>
+  .lf-wrap { width: 100%; }
+
+  /* ── Campos ── */
+  .lf-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .lf-group { display: flex; flex-direction: column; gap: 5px; }
+
+  .lf-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--light-40);
+  }
+
+  .lf-input {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--light);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+    width: 100%;
+  }
+
+  .lf-textarea {
+    resize: vertical;
+    min-height: 76px;
+    line-height: 1.55;
+  }
+
+  .lf-optional {
+    color: var(--light-38);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .lf-input::placeholder { color: var(--light-38); }
+
+  .lf-input:focus {
+    border-color: rgba(255, 255, 255, 0.30);
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  /* ── Botón de envío (mismo estilo que btn-cta del CtaBand) ── */
+  .lf-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    background: var(--yellow);
+    border: none;
+    padding: 17px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 24px var(--yellow-25);
+    letter-spacing: 0.01em;
+  }
+
+  .lf-btn:hover:not(:disabled) {
+    background: var(--yellow-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 32px var(--yellow-35);
+  }
+
+  .lf-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  .arr { font-size: 18px; transition: transform 0.18s, opacity 0.15s; }
+  .lf-btn:hover:not(:disabled) .arr { transform: translate(2px, -2px); }
+
+  /* ── Error ── */
+  .lf-error {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #ff8a8a;
+    line-height: 1.5;
+  }
+
+  /* ── Estado de éxito ── */
+  .lf-success:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 0 28px;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fadeUp 0.5s 0.05s ease forwards;
+  }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  .ls-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 116, 91, 0.22);
+    border: 1px solid var(--trop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: #05A381;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }
+
+  .ls-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--light);
+  }
+
+  .ls-body {
+    font-size: 14px;
+    color: var(--light-55);
+    line-height: 1.65;
+  }
+
+</style>

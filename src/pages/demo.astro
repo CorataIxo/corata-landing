@@ -1,0 +1,79 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import LeadForm from '../components/ui/LeadForm.astro';
+---
+
+<MainLayout>
+  <main class="demo-page">
+    <!-- Header -->
+    <section class="demo-header">
+      <div class="demo-header-content">
+        <h1>Solicita tu demo gratis</h1>
+        <p>Descubre cómo Corata valida el talento a través de pruebas de trabajo reales.</p>
+      </div>
+    </section>
+
+    <!-- Form -->
+    <section class="demo-form-section">
+      <div class="demo-form-wrap">
+        <LeadForm />
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .demo-page {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .demo-header {
+    background: var(--dark);
+    color: var(--light);
+    padding: 88px 48px;
+    text-align: center;
+  }
+
+  @media (max-width: 700px) {
+    .demo-header { padding: 56px 28px; }
+  }
+
+  .demo-header-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .demo-header h1 {
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .demo-header p {
+    font-size: 18px;
+    color: var(--light-55);
+    line-height: 1.6;
+  }
+
+  .demo-form-section {
+    flex: 1;
+    padding: 88px 48px;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 700px) {
+    .demo-form-section { padding: 56px 28px; }
+  }
+
+  .demo-form-wrap {
+    width: 100%;
+    max-width: 420px;
+  }
+</style>

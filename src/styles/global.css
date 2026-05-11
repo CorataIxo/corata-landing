@@ -227,10 +227,10 @@ h1 .hl::after {
 .btn-primary {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  color: var(--bg);
+  color: var(--dark);
   text-decoration: none;
   display: inline-block;
-  background: #D4AF37;
+  background: var(--yellow);
   border: none;
   padding: 18px 40px;
   border-radius: 10px;
@@ -239,12 +239,12 @@ h1 .hl::after {
   font-size: 13px;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  box-shadow: 0 4px 20px var(--berry-glow);
+  box-shadow: 0 4px 20px var(--yellow-25);
 }
 .btn-primary:hover {
-  background: var(--berry-deep);
+  background: var(--yellow-dark);
   transform: translateY(-2px);
-  box-shadow: 0 10px 32px rgba(217, 238, 136, 0.45);
+  box-shadow: 0 10px 32px var(--yellow-35);
 }
 
 .btn-secondary {
