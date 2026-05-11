@@ -1,0 +1,303 @@
+---
+// src/pages/privacidad.astro
+// Página de política de privacidad de Corata
+// Cumple RGPD (UE 2016/679) y LOPDGDD (LO 3/2018)
+//
+// ⚠️ ANTES DE HACER COMMIT, SUSTITUYE LOS PLACEHOLDERS:
+//   · [TU_NOMBRE_COMPLETO]
+//   · [TU_DNI]
+//   · [TU_DIRECCION_COMPLETA]
+//
+// Busca esos textos en este archivo con Ctrl+F y reemplaza por tus datos reales.
+
+const title = "Política de privacidad · Corata";
+const description = "Cómo trata Corata tus datos personales. Información sobre tus derechos RGPD.";
+const lastUpdate = "12 de mayo de 2026";
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://corata.es/privacidad" />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
+
+  <body class="min-h-screen bg-white text-neutral-900 antialiased">
+
+    <header class="border-b border-neutral-200">
+      <div class="mx-auto max-w-3xl px-6 py-4 flex items-center justify-between">
+        <a href="/" class="text-lg font-semibold tracking-wide">
+          CORATA
+        </a>
+        <a href="/" class="text-sm text-neutral-600 hover:text-neutral-900 transition">
+          ← Volver
+        </a>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-3xl px-6 py-12 md:py-16">
+
+      <div class="mb-10">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-3">
+          Política de privacidad
+        </h1>
+        <p class="text-sm text-neutral-500">
+          Última actualización: {lastUpdate}
+        </p>
+      </div>
+
+      <div class="prose prose-neutral max-w-none space-y-10 text-[15px] leading-relaxed">
+
+        <section>
+          <p class="text-base text-neutral-700">
+            En Corata nos tomamos muy en serio la protección de tus datos
+            personales. Esta política explica qué información recogemos, por
+            qué la recogemos, cómo la usamos y qué derechos tienes sobre ella.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">1. Responsable del tratamiento</h2>
+          <div class="bg-neutral-50 rounded-xl p-5 space-y-2 text-[15px]">
+            <p><span class="font-medium">Identidad:</span> África Méndez Perera</p>
+            <p><span class="font-medium">DNI:</span> 80238477X</p>
+            <p><span class="font-medium">Domicilio:</span> Estrada da Granxa, 19</p>
+            <p><span class="font-medium">Email de contacto:</span> hello@corata.es</p>
+            <p><span class="font-medium">Sitio web:</span> https://corata.es</p>
+          </div>
+          <p class="mt-4">
+            Si tienes dudas sobre cómo tratamos tus datos o quieres ejercer
+            cualquier derecho, escríbenos a <a href="mailto:hello@corata.es" class="underline hover:text-neutral-700">hello@corata.es</a>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">2. Qué datos recogemos</h2>
+          <p class="mb-3">
+            A través de los formularios de este sitio web recogemos los
+            siguientes datos personales:
+          </p>
+          <ul class="list-disc pl-6 space-y-1">
+            <li>Nombre completo</li>
+            <li>Email profesional</li>
+            <li>Empresa u organización a la que perteneces</li>
+            <li>Información sobre tu interés en Corata (categoría seleccionada)</li>
+            <li>Mensaje libre que decidas compartir con nosotras (opcional)</li>
+          </ul>
+          <p class="mt-3">
+            No recogemos categorías especiales de datos personales (salud,
+            ideología, origen racial, etc.) a través de este sitio.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">3. Para qué usamos tus datos</h2>
+          <p class="mb-3">Tus datos se utilizan exclusivamente para:</p>
+          <ol class="list-decimal pl-6 space-y-2">
+            <li>Gestionar tu solicitud de demostración del producto Corata.</li>
+            <li>Mantenerte informado sobre el estado de desarrollo del producto y avisarte cuando la demo esté disponible.</li>
+            <li>Contactarte para resolver dudas o ampliar información que nos hayas solicitado.</li>
+            <li>Cumplir obligaciones legales que puedan derivarse de la relación establecida contigo.</li>
+          </ol>
+          <p class="mt-4 font-medium">
+            Nunca cederemos tus datos a terceros para finalidades comerciales
+            distintas. Tampoco te enviaremos comunicaciones promocionales sin
+            tu consentimiento explícito y diferenciado.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">4. Base jurídica del tratamiento</h2>
+          <p>
+            La base que legitima el tratamiento de tus datos es <span class="font-medium">tu
+            consentimiento explícito</span>, prestado mediante la marcación de la
+            casilla correspondiente en el formulario, conforme al artículo
+            6.1.a del Reglamento General de Protección de Datos (RGPD).
+          </p>
+          <p class="mt-3">
+            Puedes retirar tu consentimiento en cualquier momento escribiéndonos
+            a <a href="mailto:hello@corata.es" class="underline hover:text-neutral-700">hello@corata.es</a>,
+            sin que ello afecte a la licitud del tratamiento basado en el
+            consentimiento previo a su retirada.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">5. Cuánto tiempo conservamos tus datos</h2>
+          <p class="mb-3">
+            Conservamos tus datos durante el tiempo necesario para cumplir la
+            finalidad para la que se recogieron:
+          </p>
+          <ul class="list-disc pl-6 space-y-2">
+            <li>
+              <span class="font-medium">Datos de solicitud de demo:</span>
+              hasta que ejerzas tu derecho de supresión, o durante un máximo
+              de 24 meses desde la última interacción contigo.
+            </li>
+            <li>
+              <span class="font-medium">Datos sujetos a obligación legal:</span>
+              durante los plazos legalmente exigidos (normativa fiscal,
+              mercantil, etc.).
+            </li>
+          </ul>
+          <p class="mt-3">
+            Pasados estos plazos, los datos serán suprimidos o anonimizados.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">6. Tus derechos</h2>
+          <p class="mb-3">Tienes derecho a:</p>
+          <ul class="list-disc pl-6 space-y-2">
+            <li><span class="font-medium">Acceso:</span> saber qué datos tuyos tenemos.</li>
+            <li><span class="font-medium">Rectificación:</span> corregir datos inexactos o incompletos.</li>
+            <li><span class="font-medium">Supresión:</span> que borremos tus datos cuando ya no sean necesarios.</li>
+            <li><span class="font-medium">Oposición:</span> oponerte al tratamiento de tus datos en determinadas circunstancias.</li>
+            <li><span class="font-medium">Limitación:</span> solicitar que solo conservemos los datos sin tratarlos activamente.</li>
+            <li><span class="font-medium">Portabilidad:</span> recibir tus datos en formato estructurado y reutilizable, o que los enviemos a otro responsable.</li>
+            <li><span class="font-medium">Retirar el consentimiento</span> en cualquier momento.</li>
+          </ul>
+          <p class="mt-4">
+            Para ejercer cualquiera de estos derechos, escríbenos a
+            <a href="mailto:hello@corata.es" class="underline hover:text-neutral-700">hello@corata.es</a>
+            indicando claramente qué derecho quieres ejercer. Te responderemos
+            en un plazo máximo de <span class="font-medium">30 días naturales</span>.
+          </p>
+          <p class="mt-3">
+            Si consideras que el tratamiento de tus datos no se ajusta a la
+            normativa, también tienes derecho a presentar una reclamación
+            ante la <span class="font-medium">Agencia Española de Protección de Datos</span>
+            (<a href="https://www.aepd.es" class="underline hover:text-neutral-700" target="_blank" rel="noopener">www.aepd.es</a>).
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">7. Encargados del tratamiento y transferencias</h2>
+          <p class="mb-4">
+            Para prestar el servicio, utilizamos los siguientes proveedores
+            tecnológicos que actúan como encargados del tratamiento. Todos
+            cumplen las garantías exigidas por la normativa europea de
+            protección de datos:
+          </p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-neutral-300">
+                  <th class="text-left py-2 pr-4 font-semibold">Proveedor</th>
+                  <th class="text-left py-2 pr-4 font-semibold">Finalidad</th>
+                  <th class="text-left py-2 font-semibold">Ubicación</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-neutral-200">
+                <tr>
+                  <td class="py-3 pr-4 font-medium">Vercel Inc.</td>
+                  <td class="py-3 pr-4">Alojamiento web de corata.es</td>
+                  <td class="py-3">EE. UU. (cláusulas contractuales tipo UE)</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium">Tally B.V.</td>
+                  <td class="py-3 pr-4">Recogida y gestión de formularios</td>
+                  <td class="py-3">Países Bajos (UE)</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium">IONOS SE</td>
+                  <td class="py-3 pr-4">Servicio de correo electrónico</td>
+                  <td class="py-3">Alemania (UE)</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-medium">Google LLC</td>
+                  <td class="py-3 pr-4">Almacenamiento de respuestas en Google Sheets</td>
+                  <td class="py-3">EE. UU. (cláusulas contractuales tipo UE)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-4">
+            Las transferencias internacionales fuera del Espacio Económico
+            Europeo se realizan con las garantías adecuadas previstas en el
+            RGPD, principalmente cláusulas contractuales tipo aprobadas por
+            la Comisión Europea.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">8. Cookies</h2>
+          <p>
+            Este sitio web puede utilizar cookies técnicas necesarias para su
+            funcionamiento. Actualmente no utilizamos cookies de análisis,
+            publicidad ni rastreo de terceros sin tu consentimiento.
+          </p>
+          <p class="mt-3">
+            Si en el futuro incorporamos cookies adicionales, actualizaremos
+            esta política y solicitaremos tu consentimiento previo cuando
+            sea exigible.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">9. Seguridad de los datos</h2>
+          <p class="mb-3">
+            Aplicamos medidas técnicas y organizativas apropiadas para
+            garantizar un nivel de seguridad adecuado al riesgo del
+            tratamiento, incluyendo:
+          </p>
+          <ul class="list-disc pl-6 space-y-1">
+            <li>Cifrado de comunicaciones mediante protocolo HTTPS.</li>
+            <li>Acceso restringido a los datos solo por personal autorizado.</li>
+            <li>Almacenamiento en proveedores que cumplen estándares de seguridad reconocidos (ISO 27001 o equivalentes).</li>
+            <li>Revisión periódica de los procesos de tratamiento.</li>
+          </ul>
+          <p class="mt-3">
+            Ningún sistema es 100% seguro. En caso de detectar una brecha de
+            seguridad que afecte a tus datos, te lo notificaremos de acuerdo
+            con los plazos y procedimientos establecidos por el RGPD.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">10. Cambios en esta política</h2>
+          <p>
+            Esta política puede actualizarse para reflejar cambios legales o
+            en nuestros servicios. La fecha de última actualización aparece
+            al inicio del documento. Te recomendamos revisarla periódicamente.
+          </p>
+          <p class="mt-3">
+            En caso de cambios sustanciales, te informaremos a través del
+            correo electrónico que nos hayas facilitado.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold mb-4">11. Contacto</h2>
+          <p class="mb-3">
+            Si tienes cualquier pregunta sobre esta política o sobre el
+            tratamiento de tus datos personales:
+          </p>
+          <div class="bg-neutral-50 rounded-xl p-5 space-y-2">
+            <p><span class="font-medium">Email:</span> <a href="mailto:hello@corata.es" class="underline hover:text-neutral-700">hello@corata.es</a></p>
+            <p><span class="font-medium">Web:</span> <a href="https://corata.es" class="underline hover:text-neutral-700">https://corata.es</a></p>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+
+    <footer class="border-t border-neutral-200 mt-16">
+      <div class="mx-auto max-w-3xl px-6 py-6 text-center text-xs text-neutral-500">
+        corata.es · hello@corata.es · Powered by IXO
+      </div>
+    </footer>
+
+  </body>
+</html>
