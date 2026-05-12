@@ -3,9 +3,19 @@ import '../styles/global.css';
 
 interface Props {
   title?: string;
+  description?: string;
+  ogImage?: string;
 }
 
-const { title = 'Corata — Tu Talento Verificado' } = Astro.props;
+const {
+  title = 'Corata — Tu Talento Verificado',
+  description = 'Corata · The Talent Integrity Stack. Tu forma de pensar es tu mejor credencial.',
+  ogImage = '/corata_icon_white_bg.png',
+} = Astro.props;
+
+const siteOrigin = Astro.site ?? new URL('https://www.corata.es');
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).toString();
+const ogImageUrl = new URL(ogImage, siteOrigin).toString();
 ---
 
 <html lang="es">
@@ -15,6 +25,21 @@ const { title = 'Corata — Tu Talento Verificado' } = Astro.props;
   <link rel="icon" type="image/png" href="/corata_icon_white_bg.png" />
   <link rel="apple-touch-icon" href="/corata_icon_white_bg.png" />
   <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:locale" content="es_ES" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>

@@ -4,6 +4,7 @@ import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
+  site: 'https://www.corata.es',
   output: 'static',
   adapter: vercel(),
   vite: {
