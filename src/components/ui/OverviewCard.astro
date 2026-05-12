@@ -1,9 +1,0 @@
----
-interface Props { label: string; value: string; sublabel: string; accent?: boolean; }
-const { label, value, sublabel, accent = false } = Astro.props;
-const cls = accent ? 'text-violet' : 'text-dark';
----
-<div class="bg-surface border border-rule rounded-[14px] p-[18px] flex-1">
-  <p class={`text-[26px] font-extrabold leading-none tracking-tight mb-[3px] ${cls}`}>{value}</p>
-  <p class="font-mono text-[9px] tracking-[0.1em] uppercase text-muted leading-snug">{label}<br/>{sublabel}</p>
-</div>
